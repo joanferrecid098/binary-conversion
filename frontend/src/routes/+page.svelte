@@ -1,29 +1,65 @@
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<title>Binary Conversion</title>
+	<meta name="description" content="An app to convert binary to decimal or viceversa." />
 </svelte:head>
+
+<script>
+	import { encode, decode } from './logic';
+
+	let num = 0;
+	let bin = [0, 0, 0, 0, 0, 0, 0, 0];
+	
+	const changeBinary = (w) => {
+		if (bin[w] === 0) {
+			bin[w] = 1;
+			num = decode(bin);
+			return;
+		}
+		if (bin[w] === 1) {
+			bin[w] = 0;
+			num = decode(bin);
+			return;
+		}
+	}
+
+	const addNum = () => {
+		if (num+1 < 0 || num+1 > 255) return;
+		num++;
+		bin = encode(num);
+	}
+
+	const subNum = () => {
+		if (num-1 < 0 || num-1 > 255) return;
+		num--;
+		bin = encode(num);
+	}
+
+	const changeNum = (e) => {
+		bin = encode(e.target.value);
+	}
+</script>
 
 <section>
 	<div class="binary">
 		<div class="half">
-			<p>1</p>
-			<p>0</p>
-			<p>0</p>
-			<p>1</p>
+			<p on:click={() => changeBinary(7)}>{bin[7].toString()}</p>
+			<p on:click={() => changeBinary(6)}>{bin[6].toString()}</p>
+			<p on:click={() => changeBinary(5)}>{bin[5].toString()}</p>
+			<p on:click={() => changeBinary(4)}>{bin[4].toString()}</p>
 		</div>
 		<div class="half">
-			<p>1</p>
-			<p>1</p>
-			<p>1</p>
-			<p>0</p>
+			<p on:click={() => changeBinary(3)}>{bin[3].toString()}</p>
+			<p on:click={() => changeBinary(2)}>{bin[2].toString()}</p>
+			<p on:click={() => changeBinary(1)}>{bin[1].toString()}</p>
+			<p on:click={() => changeBinary(0)}>{bin[0].toString()}</p>
 		</div>
 	</div>
 	<div class="decimal">
-		<button class="add">
+		<button class="add" on:click={addNum}>
 			<i class="material-symbols-outlined">add</i>
 		</button>
-		<input type="number" min="0" max="255">
-		<button class="subtract">
+		<input type="number" bind:value={num} on:change={changeNum}>
+		<button class="subtract" on:click={subNum}>
 			<i class="material-symbols-outlined">remove</i>
 		</button>
 	</div>
