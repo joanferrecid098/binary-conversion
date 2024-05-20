@@ -19,7 +19,13 @@
 		</div>
 	</div>
 	<div class="decimal">
-		<input type="number" value="158">
+		<button class="add">
+			<i class="material-symbols-outlined">add</i>
+		</button>
+		<input type="number" min="0" max="255">
+		<button class="subtract">
+			<i class="material-symbols-outlined">remove</i>
+		</button>
 	</div>
 </section>
 
@@ -53,6 +59,7 @@
 
 	.binary p {
 		font-family: 'Horizon', sans-serif;
+		font-weight: bold;
 		cursor: pointer;
 	}
 
@@ -60,10 +67,31 @@
 		color: var(--color-text-hover);
 	}
 
+	button {
+		transition: all 200ms;
+		background-color: var(--color-primary);
+		border: 0;
+		cursor: pointer;
+	}
+
+	.add i, .subtract i {
+		font-size: 8rem;
+		color: var(--color-text);
+	}
+
+	.add i:hover, .subtract i:hover {
+		transition: all 200ms;
+		font-size: 8rem;
+		color: var(--color-text-hover);
+	}
+
 	.decimal input {
 		background: none;
 		color: var(--color-text);
+		text-align: center;
 		font-size: 8rem;
+		max-width: 32rem;
+		min-width: 8rem;
 		border: 0;
 	}
 
