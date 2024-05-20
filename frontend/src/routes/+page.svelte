@@ -4,11 +4,31 @@
 </svelte:head>
 
 <script>
+	import ValueStore from '$lib/stores/ValueStore';
+	import { onDestroy } from 'svelte';
 	import { encode, decode } from './logic';
 
 	let num = 0;
-	let bin = [0, 0, 0, 0, 0, 0, 0, 0];
+
+	const isBrowser = typeof window !== 'undefined';
 	
+	const unsub = ValueStore.subscribe(data => {
+		num = data;
+		isBrowser && (localStorage.storable = JSON.stringify(data));
+	});
+	
+	onDestroy(() => {
+		unsub();
+	})
+
+	isBrowser &&
+		localStorage.storable &&
+		ValueStore.update(() => {
+			return JSON.parse(localStorage.storable)
+		});
+
+	let bin = encode(num);
+
 	const changeBinary = (w) => {
 		if (bin[w] === 0) {
 			bin[w] = 1;
@@ -26,16 +46,25 @@
 		if (num+1 < 0 || num+1 > 255) return;
 		num++;
 		bin = encode(num);
+		ValueStore.update(() => {
+			return num;
+		});
 	}
 
 	const subNum = () => {
 		if (num-1 < 0 || num-1 > 255) return;
 		num--;
 		bin = encode(num);
+		ValueStore.update(() => {
+			return num;
+		});
 	}
 
 	const changeNum = (e) => {
 		bin = encode(e.target.value);
+		ValueStore.update(() => {
+			return e.target.value;
+		});
 	}
 </script>
 
