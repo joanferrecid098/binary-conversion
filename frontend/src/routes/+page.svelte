@@ -5,8 +5,8 @@
 
 <script>
 	import ValueStore from '$lib/stores/ValueStore';
-	import { onDestroy } from 'svelte';
 	import { encode, decode } from './logic';
+	import { onDestroy } from 'svelte';
 
 	let num = 0;
 
